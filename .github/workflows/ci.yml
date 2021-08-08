@@ -12,3 +12,25 @@ jobs:
       run: |
         cd vtable_layout
         C:/Program` Files` `(x86`)/Microsoft` Visual` Studio/2019/Enterprise/VC/Tools/MSVC/14.29.30037/bin/Hostx64/x64/cl.exe /d1 reportAllClassLayout a.cpp
+
+  msvc_dynamic_library:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: cd dynamic_library && cmake .
+    - name: build
+      run: cd dynamic_library && cmake --build .
+    - name: run
+      run: cd dynamic_library && ./a.out.exe
+
+  gcc_dynamic_library:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: cd dynamic_library && cmake .
+    - name: build
+      run: cd dynamic_library && cmake --build .
+    - name: run
+      run: cd dynamic_library && ./a.out
