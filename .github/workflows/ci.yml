@@ -12,6 +12,17 @@ jobs:
       run: |
         cd vtable_layout
         C:/Program` Files` `(x86`)/Microsoft` Visual` Studio/2019/Enterprise/VC/Tools/MSVC/14.29.30037/bin/Hostx64/x64/cl.exe /d1 reportAllClassLayout a.cpp
+  
+  gcc_vtable_layout:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: run
+      run: |
+        cd vtable_layout
+        # g++ -std=c++11 -fdump-class-hierarchy a.cpp
+        g++ -std=c++11 -fdump-lang-class a.cpp
+        cat a.cpp.*.class
 
   msvc_dynamic_library:
     runs-on: windows-latest
@@ -23,6 +34,19 @@ jobs:
       run: cd dynamic_library && cmake --build .
     - name: run
       run: cd dynamic_library && ./a.out.exe
+
+
+
+  msvc_nm:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: cd nm && cmake .
+    - name: build
+      run: cd nm && cmake --build .
+    - name: run
+      run: cd nm && ./Debug/a.out.exe ./Debug/a.out.exe
 
   gcc_dynamic_library:
     runs-on: ubuntu-latest
