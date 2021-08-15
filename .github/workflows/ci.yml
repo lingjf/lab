@@ -46,7 +46,16 @@ jobs:
     - name: run
       run: cd vtable_hook && ./a.out.exe
 
-
+  msvc_mm:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: cd mm && cmake .
+    - name: build
+      run: cd mm && cmake --build .
+    - name: run
+      run: cd mm && ./Debug/a.out.exe
 
   msvc_nm:
     runs-on: windows-latest
