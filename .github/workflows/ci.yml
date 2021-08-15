@@ -35,6 +35,17 @@ jobs:
     - name: run
       run: cd dynamic_library && ./a.out.exe
 
+  msvc_vtable_hook:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: configure
+      run: cd vtable_hook && cmake .
+    - name: build
+      run: cd vtable_hook && cmake --build .
+    - name: run
+      run: cd vtable_hook && ./a.out.exe
+
 
 
   msvc_nm:
