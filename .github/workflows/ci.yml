@@ -78,3 +78,71 @@ jobs:
       run: cd dynamic_library && cmake --build .
     - name: run
       run: cd dynamic_library && ./a.out
+
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+          - { sys: mingw32, env: i686 }
+          - { sys: mingw64, env: x86_64 }
+          - { sys: ucrt64,  env: ucrt-x86_64 }  # Experimental!
+          - { sys: clang64, env: clang-x86_64 } # Experimental!
+    name: 🚧 ${{matrix.sys}}
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{matrix.sys}}
+        update: true
+        install: >-
+          git
+          make
+          mingw-w64-${{matrix.env}}-toolchain
+          mingw-w64-${{matrix.env}}-cmake
+          mingw-w64-${{matrix.env}}-ninja
+    - name: check platform
+      run: uname -a
+    - name: pre-defined preprocessor macros
+      run: gcc -dM -E - < /dev/null
+    - name: sysroot directory for headers and libraries
+      run: g++ -E -v - < /dev/null
+    - name: configure
+      run: cd dynamic_library && cmake .
+    - name: build
+      run: cd dynamic_library && cmake --build .
+    - name: run
+      run: cd dynamic_library && ./a.out
+
+  hello: 
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: mingw64
+        update: true
+        install: >-
+          git
+          make
+          mingw-w64-x86_64-toolchain
+          mingw-w64-x86_64-cmake
+          mingw-w64-x86_64-ninja
+    - uses: actions/checkout@v2
+    - name: check platform
+      run: uname -a
+    - name: pre-defined preprocessor macros
+      run: gcc -dM -E - < /dev/null
+    - name: sysroot directory for headers and libraries
+      run: g++ -E -v - < /dev/null
+    - name: configure
+      run: cd dynamic_library && cmake .
+    - name: build
+      run: cd dynamic_library && cmake --build .
+    - name: run
+      run: cd dynamic_library && ./a.out
