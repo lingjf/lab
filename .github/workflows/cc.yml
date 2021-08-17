@@ -3,12 +3,6 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      env:
-          SITE: ${{ matrix.site }}
-          DATACENTER: ${{ matrix.datacenter }}
-      run:
-        shell: msys2 {0}
     strategy:
       matrix:
        include:
@@ -20,4 +14,9 @@ jobs:
            datacenter: "site-b"
     steps:
       - name: Echo site details
+        env:
+          SITE: ${{ matrix.site }}
+          DATACENTER: ${{ matrix.datacenter }}
+        run: echo $SITE $DATACENTER
+      - name: Show double
         run: echo $SITE $DATACENTER
